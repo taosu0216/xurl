@@ -36,3 +36,7 @@
 ## Branch Safety Rule
 - If the user is working on `main`, do not create a new branch and do not switch branches unless the user explicitly asks for it.
 - If branch-based workflow could help, mention it as an optional follow-up instead of doing it by default.
+
+## Release Rule
+- When the user asks for a release, create a GitHub Release together with the version tag; do not stop at creating only a tag.
+- Fill the release changelog based on the actual changes included in that release.
