@@ -3,7 +3,7 @@ use std::path::Path;
 
 use serde_json::Value;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{MessageRole, ProviderKind, ThreadMessage};
 use crate::uri::ThreadUri;
 
@@ -109,7 +109,7 @@ fn extract_timeline_entries(
         }
 
         let value = serde_json::from_str::<Value>(trimmed).map_err(|source| {
-            TurlError::InvalidJsonLine {
+            XurlError::InvalidJsonLine {
                 path: path.to_path_buf(),
                 line: line_no,
                 source,
@@ -154,7 +154,7 @@ fn extract_pi_entries(
         }
 
         let value = serde_json::from_str::<Value>(trimmed).map_err(|source| {
-            TurlError::InvalidJsonLine {
+            XurlError::InvalidJsonLine {
                 path: path.to_path_buf(),
                 line: line_no,
                 source,
@@ -187,7 +187,7 @@ fn extract_pi_entries(
         .unwrap_or_default();
 
     if !entries_by_id.contains_key(&leaf_id) {
-        return Err(TurlError::EntryNotFound {
+        return Err(XurlError::EntryNotFound {
             provider: ProviderKind::Pi.to_string(),
             session_id: session_id.to_string(),
             entry_id: leaf_id,
@@ -259,7 +259,7 @@ fn extract_pi_entry(value: &Value) -> Option<TimelineEntry> {
 
 fn extract_amp_messages(path: &Path, raw_json: &str) -> Result<Vec<ThreadMessage>> {
     let value =
-        serde_json::from_str::<Value>(raw_json).map_err(|source| TurlError::InvalidJsonLine {
+        serde_json::from_str::<Value>(raw_json).map_err(|source| XurlError::InvalidJsonLine {
             path: path.to_path_buf(),
             line: 1,
             source,
@@ -293,7 +293,7 @@ fn extract_amp_messages(path: &Path, raw_json: &str) -> Result<Vec<ThreadMessage
 
 fn extract_gemini_messages(path: &Path, raw_json: &str) -> Result<Vec<ThreadMessage>> {
     let value =
-        serde_json::from_str::<Value>(raw_json).map_err(|source| TurlError::InvalidJsonLine {
+        serde_json::from_str::<Value>(raw_json).map_err(|source| XurlError::InvalidJsonLine {
             path: path.to_path_buf(),
             line: 1,
             source,

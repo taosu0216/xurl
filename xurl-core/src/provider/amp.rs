@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{ProviderKind, ResolutionMeta, ResolvedThread};
 use crate::provider::Provider;
 
@@ -25,7 +25,7 @@ impl Provider for AmpProvider {
         let path = threads_root.join(format!("{session_id}.json"));
 
         if !path.exists() {
-            return Err(TurlError::ThreadNotFound {
+            return Err(XurlError::ThreadNotFound {
                 provider: ProviderKind::Amp.to_string(),
                 session_id: session_id.to_string(),
                 searched_roots: vec![threads_root],

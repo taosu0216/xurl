@@ -5,7 +5,7 @@ use std::time::UNIX_EPOCH;
 
 use serde_json::Value;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{
     PiEntryListItem, PiEntryListView, PiEntryQuery, ProviderKind, ResolvedThread,
     SubagentDetailView, SubagentExcerptMessage, SubagentLifecycleEvent, SubagentListItem,
@@ -62,18 +62,18 @@ pub fn resolve_thread(uri: &ThreadUri, roots: &ProviderRoots) -> Result<Resolved
 }
 
 pub fn read_thread_raw(path: &Path) -> Result<String> {
-    let bytes = fs::read(path).map_err(|source| TurlError::Io {
+    let bytes = fs::read(path).map_err(|source| XurlError::Io {
         path: path.to_path_buf(),
         source,
     })?;
 
     if bytes.is_empty() {
-        return Err(TurlError::EmptyThreadFile {
+        return Err(XurlError::EmptyThreadFile {
             path: path.to_path_buf(),
         });
     }
 
-    String::from_utf8(bytes).map_err(|_| TurlError::NonUtf8ThreadFile {
+    String::from_utf8(bytes).map_err(|_| XurlError::NonUtf8ThreadFile {
         path: path.to_path_buf(),
     })
 }
@@ -89,13 +89,13 @@ pub fn resolve_subagent_view(
     list: bool,
 ) -> Result<SubagentView> {
     if list && uri.agent_id.is_some() {
-        return Err(TurlError::InvalidMode(
+        return Err(XurlError::InvalidMode(
             "--list cannot be used with <provider>://<main_thread_id>/<agent_id>".to_string(),
         ));
     }
 
     if !list && uri.agent_id.is_none() {
-        return Err(TurlError::InvalidMode(
+        return Err(XurlError::InvalidMode(
             "subagent drill-down requires <provider>://<main_thread_id>/<agent_id>".to_string(),
         ));
     }
@@ -103,14 +103,14 @@ pub fn resolve_subagent_view(
     match uri.provider {
         ProviderKind::Codex => resolve_codex_subagent_view(uri, roots, list),
         ProviderKind::Claude => resolve_claude_subagent_view(uri, roots, list),
-        _ => Err(TurlError::UnsupportedSubagentProvider(
+        _ => Err(XurlError::UnsupportedSubagentProvider(
             uri.provider.to_string(),
         )),
     }
 }
 
 pub fn subagent_view_to_raw_json(view: &SubagentView) -> Result<String> {
-    serde_json::to_string_pretty(view).map_err(|err| TurlError::Serialization(err.to_string()))
+    serde_json::to_string_pretty(view).map_err(|err| XurlError::Serialization(err.to_string()))
 }
 
 pub fn render_subagent_view_markdown(view: &SubagentView) -> String {
@@ -125,12 +125,12 @@ pub fn resolve_pi_entry_list_view(
     roots: &ProviderRoots,
 ) -> Result<PiEntryListView> {
     if uri.provider != ProviderKind::Pi {
-        return Err(TurlError::InvalidMode(
+        return Err(XurlError::InvalidMode(
             "pi entry listing requires pi://<session_id>".to_string(),
         ));
     }
     if uri.agent_id.is_some() {
-        return Err(TurlError::InvalidMode(
+        return Err(XurlError::InvalidMode(
             "--list cannot be used with pi://<session_id>/<entry_id>".to_string(),
         ));
     }
@@ -228,7 +228,7 @@ pub fn resolve_pi_entry_list_view(
 }
 
 pub fn pi_entry_list_view_to_raw_json(view: &PiEntryListView) -> Result<String> {
-    serde_json::to_string_pretty(view).map_err(|err| TurlError::Serialization(err.to_string()))
+    serde_json::to_string_pretty(view).map_err(|err| XurlError::Serialization(err.to_string()))
 }
 
 pub fn render_pi_entry_list_markdown(view: &PiEntryListView) -> String {
@@ -291,7 +291,7 @@ fn resolve_codex_subagent_view(
     let agent_id = uri
         .agent_id
         .clone()
-        .ok_or_else(|| TurlError::InvalidMode("missing agent id".to_string()))?;
+        .ok_or_else(|| XurlError::InvalidMode("missing agent id".to_string()))?;
 
     Ok(SubagentView::Detail(build_codex_detail_view(
         uri, roots, &agent_id, &timelines, warnings,
@@ -827,7 +827,7 @@ fn resolve_claude_subagent_view(
     let requested_agent = uri
         .agent_id
         .clone()
-        .ok_or_else(|| TurlError::InvalidMode("missing agent id".to_string()))?;
+        .ok_or_else(|| XurlError::InvalidMode("missing agent id".to_string()))?;
 
     let normalized_requested = normalize_agent_id(&requested_agent);
 

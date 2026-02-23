@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use rusqlite::{Connection, OpenFlags};
 use serde_json::{Value, json};
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{ProviderKind, ResolutionMeta, ResolvedThread};
 use crate::provider::Provider;
 
@@ -25,7 +25,7 @@ impl OpencodeProvider {
 
     fn materialized_path(session_id: &str) -> PathBuf {
         std::env::temp_dir()
-            .join("turl-opencode")
+            .join("xurl-opencode")
             .join(format!("{session_id}.jsonl"))
     }
 
@@ -142,7 +142,7 @@ impl Provider for OpencodeProvider {
     fn resolve(&self, session_id: &str) -> Result<ResolvedThread> {
         let db_path = self.db_path();
         if !db_path.exists() {
-            return Err(TurlError::ThreadNotFound {
+            return Err(XurlError::ThreadNotFound {
                 provider: ProviderKind::Opencode.to_string(),
                 session_id: session_id.to_string(),
                 searched_roots: vec![db_path],
@@ -150,16 +150,16 @@ impl Provider for OpencodeProvider {
         }
 
         let conn = Connection::open_with_flags(&db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)
-            .map_err(|source| TurlError::Sqlite {
+            .map_err(|source| XurlError::Sqlite {
                 path: db_path.clone(),
                 source,
             })?;
 
-        if !Self::session_exists(&conn, session_id).map_err(|source| TurlError::Sqlite {
+        if !Self::session_exists(&conn, session_id).map_err(|source| XurlError::Sqlite {
             path: db_path.clone(),
             source,
         })? {
-            return Err(TurlError::ThreadNotFound {
+            return Err(XurlError::ThreadNotFound {
                 provider: ProviderKind::Opencode.to_string(),
                 session_id: session_id.to_string(),
                 searched_roots: vec![db_path],
@@ -169,13 +169,13 @@ impl Provider for OpencodeProvider {
         let mut warnings = Vec::new();
         let messages =
             Self::fetch_messages(&conn, session_id, &mut warnings).map_err(|source| {
-                TurlError::Sqlite {
+                XurlError::Sqlite {
                     path: db_path.clone(),
                     source,
                 }
             })?;
         let parts = Self::fetch_parts(&conn, session_id, &mut warnings).map_err(|source| {
-            TurlError::Sqlite {
+            XurlError::Sqlite {
                 path: db_path.clone(),
                 source,
             }
@@ -185,13 +185,13 @@ impl Provider for OpencodeProvider {
         let path = Self::materialized_path(session_id);
 
         if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent).map_err(|source| TurlError::Io {
+            fs::create_dir_all(parent).map_err(|source| XurlError::Io {
                 path: parent.to_path_buf(),
                 source,
             })?;
         }
 
-        fs::write(&path, raw).map_err(|source| TurlError::Io {
+        fs::write(&path, raw).map_err(|source| XurlError::Io {
             path: path.clone(),
             source,
         })?;

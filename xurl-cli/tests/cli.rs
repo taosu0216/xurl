@@ -241,7 +241,7 @@ fn opencode_real_uri() -> String {
 fn default_outputs_markdown() {
     let temp = setup_codex_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_uri())
@@ -256,7 +256,7 @@ fn default_outputs_markdown() {
 fn raw_outputs_json() {
     let temp = setup_codex_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_uri())
@@ -270,7 +270,7 @@ fn raw_outputs_json() {
 fn codex_deeplink_outputs_markdown() {
     let temp = setup_codex_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_deeplink_uri())
@@ -285,7 +285,7 @@ fn codex_deeplink_outputs_markdown() {
 fn codex_list_raw_outputs_aggregate_json() {
     let temp = setup_codex_subagent_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_uri())
@@ -304,7 +304,7 @@ fn codex_subagent_outputs_markdown_view() {
     let main_uri = format!("codex://{SESSION_ID}");
     let subagent_uri = format!("{main_uri}/{SUBAGENT_ID}");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_subagent_uri())
@@ -325,7 +325,7 @@ fn codex_subagent_outputs_markdown_view() {
 fn codex_outputs_no_warning_text_for_markdown() {
     let temp = setup_codex_tree_with_sqlite_missing_threads();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_uri())
@@ -338,7 +338,7 @@ fn codex_outputs_no_warning_text_for_markdown() {
 fn codex_subagent_outputs_no_warning_text_for_markdown() {
     let temp = setup_codex_subagent_tree_with_sqlite_missing_threads();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_uri())
@@ -356,7 +356,7 @@ fn codex_real_fixture_subagent_list_outputs_markdown() {
     let main_uri = format!("codex://{REAL_FIXTURE_MAIN_ID}");
     let subagent_uri = format!("{main_uri}/{REAL_FIXTURE_AGENT_ID}");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", fixture_root)
         .env("CLAUDE_CONFIG_DIR", "/tmp/missing-claude")
         .arg(format!("codex://{REAL_FIXTURE_MAIN_ID}"))
@@ -375,7 +375,7 @@ fn codex_real_fixture_subagent_detail_outputs_markdown() {
     let fixture_root = codex_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", fixture_root)
         .env("CLAUDE_CONFIG_DIR", "/tmp/missing-claude")
         .arg(format!(
@@ -391,7 +391,7 @@ fn codex_real_fixture_subagent_detail_outputs_markdown() {
 fn list_mode_rejects_subagent_uri() {
     let temp = setup_codex_subagent_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
         .arg(codex_subagent_uri())
@@ -405,7 +405,7 @@ fn list_mode_rejects_subagent_uri() {
 fn missing_thread_returns_non_zero() {
     let temp = tempdir().expect("tempdir");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CODEX_HOME", temp.path())
         .env("CLAUDE_CONFIG_DIR", temp.path())
         .arg(codex_uri())
@@ -418,7 +418,7 @@ fn missing_thread_returns_non_zero() {
 fn amp_outputs_markdown() {
     let temp = setup_amp_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("XDG_DATA_HOME", temp.path())
         .env("CODEX_HOME", temp.path().join("missing-codex"))
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
@@ -436,7 +436,7 @@ fn amp_outputs_markdown() {
 fn amp_raw_outputs_json() {
     let temp = setup_amp_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("XDG_DATA_HOME", temp.path())
         .env("CODEX_HOME", temp.path().join("missing-codex"))
         .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
@@ -451,7 +451,7 @@ fn amp_raw_outputs_json() {
 fn gemini_outputs_markdown() {
     let temp = setup_gemini_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("GEMINI_CLI_HOME", temp.path())
         .arg(gemini_uri())
         .assert()
@@ -466,7 +466,7 @@ fn gemini_outputs_markdown() {
 fn gemini_raw_outputs_json() {
     let temp = setup_gemini_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("GEMINI_CLI_HOME", temp.path())
         .arg(gemini_uri())
         .arg("--raw")
@@ -479,7 +479,7 @@ fn gemini_raw_outputs_json() {
 fn pi_outputs_markdown_from_latest_leaf() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_uri())
         .assert()
@@ -494,7 +494,7 @@ fn pi_outputs_markdown_from_latest_leaf() {
 fn pi_entry_outputs_markdown_from_requested_leaf() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_entry_uri())
         .assert()
@@ -508,7 +508,7 @@ fn pi_entry_outputs_markdown_from_requested_leaf() {
 fn pi_raw_outputs_json() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_uri())
         .arg("--raw")
@@ -522,7 +522,7 @@ fn pi_raw_outputs_json() {
 fn pi_list_outputs_markdown() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_uri())
         .arg("--list")
@@ -539,7 +539,7 @@ fn pi_list_outputs_markdown() {
 fn pi_list_raw_outputs_json() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_uri())
         .arg("--list")
@@ -558,7 +558,7 @@ fn pi_list_raw_outputs_json() {
 fn pi_list_rejects_entry_uri() {
     let temp = setup_pi_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
         .arg(pi_entry_uri())
         .arg("--list")
@@ -573,7 +573,7 @@ fn pi_real_fixture_outputs_markdown() {
     let fixture_root = pi_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("PI_CODING_AGENT_DIR", fixture_root)
         .arg(pi_real_uri())
         .assert()
@@ -587,7 +587,7 @@ fn pi_real_fixture_outputs_markdown() {
 fn claude_list_raw_outputs_aggregate_json() {
     let temp = setup_claude_subagent_tree();
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CLAUDE_CONFIG_DIR", temp.path())
         .env("CODEX_HOME", temp.path().join("missing-codex"))
         .arg(claude_uri())
@@ -606,7 +606,7 @@ fn claude_subagent_outputs_markdown_view() {
     let main_uri = format!("claude://{CLAUDE_SESSION_ID}");
     let subagent_uri = format!("{main_uri}/{CLAUDE_AGENT_ID}");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CLAUDE_CONFIG_DIR", temp.path())
         .env("CODEX_HOME", temp.path().join("missing-codex"))
         .arg(claude_subagent_uri())
@@ -629,7 +629,7 @@ fn claude_real_fixture_subagent_list_outputs_markdown() {
     let main_uri = format!("claude://{CLAUDE_REAL_MAIN_ID}");
     let subagent_uri = format!("{main_uri}/{CLAUDE_REAL_AGENT_ID}");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CLAUDE_CONFIG_DIR", fixture_root)
         .env("CODEX_HOME", "/tmp/missing-codex")
         .arg(claude_real_uri())
@@ -648,7 +648,7 @@ fn claude_real_fixture_subagent_detail_outputs_markdown() {
     let fixture_root = claude_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("CLAUDE_CONFIG_DIR", fixture_root)
         .env("CODEX_HOME", "/tmp/missing-codex")
         .arg(claude_real_subagent_uri())
@@ -663,7 +663,7 @@ fn gemini_real_fixture_outputs_markdown() {
     let fixture_root = gemini_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("GEMINI_CLI_HOME", fixture_root)
         .arg(gemini_real_uri())
         .assert()
@@ -677,7 +677,7 @@ fn gemini_real_fixture_raw_outputs_json() {
     let fixture_root = gemini_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("GEMINI_CLI_HOME", fixture_root)
         .arg(gemini_real_uri())
         .arg("--raw")
@@ -693,7 +693,7 @@ fn opencode_real_fixture_outputs_markdown() {
     let fixture_root = opencode_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("XDG_DATA_HOME", fixture_root)
         .arg(opencode_real_uri())
         .assert()
@@ -707,7 +707,7 @@ fn opencode_real_fixture_raw_outputs_json() {
     let fixture_root = opencode_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
 
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
     cmd.env("XDG_DATA_HOME", fixture_root)
         .arg(opencode_real_uri())
         .arg("--raw")

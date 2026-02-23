@@ -6,7 +6,7 @@ use std::time::SystemTime;
 use rusqlite::{Connection, OpenFlags, OptionalExtension};
 use walkdir::WalkDir;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{ProviderKind, ResolutionMeta, ResolvedThread};
 use crate::provider::Provider;
 
@@ -245,7 +245,7 @@ impl Provider for CodexProvider {
             });
         }
 
-        Err(TurlError::ThreadNotFound {
+        Err(XurlError::ThreadNotFound {
             provider: ProviderKind::Codex.to_string(),
             session_id: session_id.to_string(),
             searched_roots: vec![sessions, archived]

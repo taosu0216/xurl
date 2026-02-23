@@ -1,5 +1,5 @@
 [package]
-name = "turl-core"
+name = "xurl-core"
 version = "0.0.7"
 edition = "2024"
 

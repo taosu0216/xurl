@@ -1,5 +1,5 @@
 [workspace]
-members = ["turl-core", "turl-cli"]
+members = ["xurl-core", "xurl-cli"]
 resolver = "2"
 
 [workspace.package]

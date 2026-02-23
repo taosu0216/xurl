@@ -6,7 +6,7 @@ Proposed
 
 ## Context
 
-`turl` currently resolves a single thread URI into one local thread file and renders a timeline view. This works for primary conversations, but it does not provide a first-class way to inspect subagent lifecycle state or drill down into a specific subagent context under a parent thread.
+`xurl` currently resolves a single thread URI into one local thread file and renders a timeline view. This works for primary conversations, but it does not provide a first-class way to inspect subagent lifecycle state or drill down into a specific subagent context under a parent thread.
 
 The existing URI behavior is inconsistent with subagent use cases because it only models one `session_id` and does not encode parent/child scope in the URI itself.
 
@@ -43,12 +43,12 @@ The existing URI behavior is inconsistent with subagent use cases because it onl
 ### Aggregate Listing
 
 - Aggregate subagents under a parent thread is triggered by `--list`:
-  - `turl '<provider>://<main_thread_id>' --list`
+  - `xurl '<provider>://<main_thread_id>' --list`
 
 ### Single-Agent Drill-Down
 
 - Drill-down view is path-based:
-  - `turl '<provider>://<main_thread_id>/<agent_id>'`
+  - `xurl '<provider>://<main_thread_id>/<agent_id>'`
 
 ### Mode Constraints
 

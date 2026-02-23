@@ -1,15 +1,15 @@
 use std::process::ExitCode;
 
 use clap::Parser;
-use turl_core::{
-    ProviderKind, ProviderRoots, ThreadUri, TurlError, pi_entry_list_view_to_raw_json,
+use xurl_core::{
+    ProviderKind, ProviderRoots, ThreadUri, XurlError, pi_entry_list_view_to_raw_json,
     read_thread_raw, render_pi_entry_list_markdown, render_subagent_view_markdown,
     render_thread_markdown, resolve_pi_entry_list_view, resolve_subagent_view, resolve_thread,
     subagent_view_to_raw_json,
 };
 
 #[derive(Debug, Parser)]
-#[command(name = "turl", version, about = "Resolve and read code-agent threads")]
+#[command(name = "xurl", version, about = "Resolve and read code-agent threads")]
 struct Cli {
     /// Thread URI like amp://<session_id>, codex://<session_id>, codex://threads/<session_id>, claude://<session_id>, gemini://<session_id>, pi://<session_id>, pi://<session_id>/<entry_id>, or opencode://<session_id>
     uri: String,
@@ -36,12 +36,12 @@ fn main() -> ExitCode {
     }
 }
 
-fn run(cli: Cli) -> turl_core::Result<()> {
+fn run(cli: Cli) -> xurl_core::Result<()> {
     let roots = ProviderRoots::from_env_or_home()?;
     let uri = ThreadUri::parse(&cli.uri)?;
     let supports_subagent = matches!(
         uri.provider,
-        turl_core::ProviderKind::Codex | turl_core::ProviderKind::Claude
+        xurl_core::ProviderKind::Codex | xurl_core::ProviderKind::Claude
     );
 
     if cli.list && uri.provider == ProviderKind::Pi {
@@ -58,7 +58,7 @@ fn run(cli: Cli) -> turl_core::Result<()> {
 
     if cli.list || (supports_subagent && uri.agent_id.is_some()) {
         if cli.list && uri.agent_id.is_some() {
-            return Err(TurlError::InvalidMode(
+            return Err(XurlError::InvalidMode(
                 "--list cannot be used with <provider>://<main_thread_id>/<agent_id>".to_string(),
             ));
         }

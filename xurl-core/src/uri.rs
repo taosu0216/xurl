@@ -3,7 +3,7 @@ use std::str::FromStr;
 use once_cell::sync::Lazy;
 use regex::Regex;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::ProviderKind;
 
 static SESSION_ID_RE: Lazy<Regex> = Lazy::new(|| {
@@ -40,12 +40,12 @@ impl ThreadUri {
 }
 
 impl FromStr for ThreadUri {
-    type Err = TurlError;
+    type Err = XurlError;
 
     fn from_str(input: &str) -> Result<Self> {
         let (scheme, target) = input
             .split_once("://")
-            .ok_or_else(|| TurlError::InvalidUri(input.to_string()))?;
+            .ok_or_else(|| XurlError::InvalidUri(input.to_string()))?;
 
         let provider = match scheme {
             "amp" => ProviderKind::Amp,
@@ -54,7 +54,7 @@ impl FromStr for ThreadUri {
             "gemini" => ProviderKind::Gemini,
             "pi" => ProviderKind::Pi,
             "opencode" => ProviderKind::Opencode,
-            _ => return Err(TurlError::UnsupportedScheme(scheme.to_string())),
+            _ => return Err(XurlError::UnsupportedScheme(scheme.to_string())),
         };
 
         let normalized_target = match provider {
@@ -73,18 +73,18 @@ impl FromStr for ThreadUri {
                 let agent_id = segments.next().map(str::to_string);
 
                 if segments.next().is_some() {
-                    return Err(TurlError::InvalidUri(input.to_string()));
+                    return Err(XurlError::InvalidUri(input.to_string()));
                 }
 
                 if agent_id.as_deref().is_some_and(str::is_empty) {
-                    return Err(TurlError::InvalidUri(input.to_string()));
+                    return Err(XurlError::InvalidUri(input.to_string()));
                 }
 
                 (main_id, agent_id)
             }
             ProviderKind::Amp | ProviderKind::Gemini | ProviderKind::Opencode => {
                 if normalized_target.contains('/') {
-                    return Err(TurlError::InvalidUri(input.to_string()));
+                    return Err(XurlError::InvalidUri(input.to_string()));
                 }
                 (normalized_target, None)
             }
@@ -92,7 +92,7 @@ impl FromStr for ThreadUri {
 
         match provider {
             ProviderKind::Amp if !AMP_SESSION_ID_RE.is_match(id) => {
-                return Err(TurlError::InvalidSessionId(id.to_string()));
+                return Err(XurlError::InvalidSessionId(id.to_string()));
             }
             ProviderKind::Codex
             | ProviderKind::Claude
@@ -100,10 +100,10 @@ impl FromStr for ThreadUri {
             | ProviderKind::Pi
                 if !SESSION_ID_RE.is_match(id) =>
             {
-                return Err(TurlError::InvalidSessionId(id.to_string()));
+                return Err(XurlError::InvalidSessionId(id.to_string()));
             }
             ProviderKind::Opencode if !OPENCODE_SESSION_ID_RE.is_match(id) => {
-                return Err(TurlError::InvalidSessionId(id.to_string()));
+                return Err(XurlError::InvalidSessionId(id.to_string()));
             }
             _ => {}
         }

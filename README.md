@@ -1,6 +1,6 @@
-# turl
+# xurl
 
-`turl` is a Rust CLI and library for locating and reading local code-agent thread files.
+`xurl` is a Rust CLI and library for locating and reading local code-agent thread files.
 
 ## Features
 
@@ -22,7 +22,7 @@
 ## Install
 
 ```bash
-npx skills add Xuanwo/turl
+npx skills add Xuanwo/xurl
 ```
 
 ## Agents
@@ -39,7 +39,7 @@ npx skills add Xuanwo/turl
 - Example:
 
 ```bash
-turl amp://T-019c0797-c402-7389-bd80-d785c98df295
+xurl amp://T-019c0797-c402-7389-bd80-d785c98df295
 ```
 
 ### Codex
@@ -49,18 +49,18 @@ turl amp://T-019c0797-c402-7389-bd80-d785c98df295
   - `codex://threads/<session_id>`
   - `codex://<main_session_id>/<agent_id>`
 - Subagent modes:
-  - Aggregate: `turl codex://<main_session_id> --list`
-  - Drill-down: `turl codex://<main_session_id>/<agent_id>`
+  - Aggregate: `xurl codex://<main_session_id> --list`
+  - Drill-down: `xurl codex://<main_session_id>/<agent_id>`
 - Resolution order:
   - SQLite thread index under `CODEX_HOME` (`state_<version>.sqlite` first, then `state.sqlite`) via `threads(id, rollout_path, archived)`.
   - Filesystem fallback under `sessions/` and `archived_sessions/` for `rollout-*.jsonl`.
 - Examples:
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592
-turl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592
+xurl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
 ```
 
 ### Claude
@@ -69,14 +69,14 @@ turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02
   - `claude://<session_id>`
   - `claude://<main_session_id>/<agent_id>`
 - Subagent modes:
-  - Aggregate: `turl claude://<main_session_id> --list`
-  - Drill-down: `turl claude://<main_session_id>/<agent_id>`
+  - Aggregate: `xurl claude://<main_session_id> --list`
+  - Drill-down: `xurl claude://<main_session_id>/<agent_id>`
 - Example:
 
 ```bash
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
 ```
 
 ### OpenCode
@@ -86,7 +86,7 @@ turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
 - Example:
 
 ```bash
-turl opencode://ses_43a90e3adffejRgrTdlJa48CtE
+xurl opencode://ses_43a90e3adffejRgrTdlJa48CtE
 ```
 
 ### Gemini
@@ -101,7 +101,7 @@ turl opencode://ses_43a90e3adffejRgrTdlJa48CtE
 - Example:
 
 ```bash
-turl gemini://29d207db-ca7e-40ba-87f7-e14c9de60613
+xurl gemini://29d207db-ca7e-40ba-87f7-e14c9de60613
 ```
 
 ### Pi
@@ -121,7 +121,7 @@ turl gemini://29d207db-ca7e-40ba-87f7-e14c9de60613
 - Example:
 
 ```bash
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f/d1b2c3d4
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f/d1b2c3d4
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
 ```

@@ -8,7 +8,7 @@ use serde::Deserialize;
 use serde_json::Value;
 use walkdir::WalkDir;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::{ProviderKind, ResolutionMeta, ResolvedThread};
 use crate::provider::Provider;
 
@@ -208,7 +208,7 @@ impl Provider for ClaudeProvider {
             ));
         }
 
-        Err(TurlError::ThreadNotFound {
+        Err(XurlError::ThreadNotFound {
             provider: ProviderKind::Claude.to_string(),
             session_id: session_id.to_string(),
             searched_roots: vec![projects],

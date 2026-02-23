@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum TurlError {
+pub enum XurlError {
     #[error("invalid uri: {0}")]
     InvalidUri(String),
 
@@ -68,4 +68,4 @@ pub enum TurlError {
     },
 }
 
-pub type Result<T> = std::result::Result<T, TurlError>;
+pub type Result<T> = std::result::Result<T, XurlError>;

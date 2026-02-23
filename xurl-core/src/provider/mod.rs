@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 use dirs::home_dir;
 
-use crate::error::{Result, TurlError};
+use crate::error::{Result, XurlError};
 use crate::model::ResolvedThread;
 
 pub mod amp;
@@ -29,7 +29,7 @@ pub struct ProviderRoots {
 
 impl ProviderRoots {
     pub fn from_env_or_home() -> Result<Self> {
-        let home = home_dir().ok_or(TurlError::HomeDirectoryNotFound)?;
+        let home = home_dir().ok_or(XurlError::HomeDirectoryNotFound)?;
 
         // Precedence:
         // 1) XDG_DATA_HOME/amp

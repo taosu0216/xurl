@@ -3,7 +3,7 @@ requires = ["maturin>=1.8,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "xuanwo-turl"
+name = "xuanwo-xurl"
 dynamic = ["version"]
 description = "Locate and read local code-agent thread files"
 readme = "README.md"
@@ -22,13 +22,13 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Xuanwo/turl"
-Repository = "https://github.com/Xuanwo/turl"
-Issues = "https://github.com/Xuanwo/turl/issues"
+Homepage = "https://github.com/Xuanwo/xurl"
+Repository = "https://github.com/Xuanwo/xurl"
+Issues = "https://github.com/Xuanwo/xurl/issues"
 
 [tool.maturin]
 bindings = "bin"
-manifest-path = "turl-cli/Cargo.toml"
+manifest-path = "xurl-cli/Cargo.toml"
 compatibility = "pypi"
 sdist-generator = "git"
 strip = true

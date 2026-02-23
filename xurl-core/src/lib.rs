@@ -5,7 +5,7 @@ pub mod render;
 pub mod service;
 pub mod uri;
 
-pub use error::{Result, TurlError};
+pub use error::{Result, XurlError};
 pub use model::{
     MessageRole, PiEntryListView, ProviderKind, ResolutionMeta, ResolvedThread, SubagentDetailView,
     SubagentListView, SubagentView, ThreadMessage,

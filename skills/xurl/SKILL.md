@@ -1,19 +1,19 @@
 ---
-name: turl
-description: Use the turl CLI to resolve Amp, Codex, Claude, Gemini, Pi, or OpenCode thread URIs and read AI agent threads for compact, handoff, delegate, and traceability workflows.
+name: xurl
+description: Use the xurl CLI to resolve Amp, Codex, Claude, Gemini, Pi, or OpenCode thread URIs and read AI agent threads for compact, handoff, delegate, and traceability workflows.
 ---
 
-# turl
+# xurl
 
 Use this skill when you need to read AI agent thread content by URI.
 
 ## Installation
 
-Install `turl` from package `xuanwo-turl` via `uv`:
+Install `xurl` from package `xuanwo-xurl` via `uv`:
 
 ```bash
-uv tool install xuanwo-turl
-turl --version
+uv tool install xuanwo-xurl
+xurl --version
 ```
 
 ## When to Use
@@ -47,7 +47,7 @@ turl --version
 - `amp`, `gemini`, and `opencode` do not support child path segments.
 
 4. If child id is unknown, discover first.
-- Use `turl <main_uri> --list` to get valid child targets (Codex/Claude subagents, Pi entries).
+- Use `xurl <main_uri> --list` to get valid child targets (Codex/Claude subagents, Pi entries).
 - Copy URI/id from the list output instead of guessing.
 
 ## Supported URI Forms
@@ -83,83 +83,83 @@ turl --version
 Default output (timeline markdown with user/assistant messages and compact markers):
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592
 ```
 
 Raw JSONL output:
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --raw
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --raw
 ```
 
 Discover child targets first:
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
 ```
 
 Codex subagent aggregate view:
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
 ```
 
 Codex subagent drill-down:
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
 ```
 
 Claude thread example:
 
 ```bash
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f
 ```
 
 Claude subagent aggregate view:
 
 ```bash
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f --list
 ```
 
 Claude subagent drill-down:
 
 ```bash
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
 ```
 
 Codex deep-link example:
 
 ```bash
-turl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
+xurl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
 ```
 
 OpenCode thread example:
 
 ```bash
-turl opencode://ses_43a90e3adffejRgrTdlJa48CtE
+xurl opencode://ses_43a90e3adffejRgrTdlJa48CtE
 ```
 
 Gemini thread example:
 
 ```bash
-turl gemini://29d207db-ca7e-40ba-87f7-e14c9de60613
+xurl gemini://29d207db-ca7e-40ba-87f7-e14c9de60613
 ```
 
 Pi thread examples:
 
 ```bash
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f/d1b2c3d4
-turl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f/d1b2c3d4
+xurl pi://12cb4c19-2774-4de4-a0d0-9fa32fbae29f --list
 ```
 
 Amp thread example:
 
 ```bash
-turl amp://T-019c0797-c402-7389-bd80-d785c98df295
+xurl amp://T-019c0797-c402-7389-bd80-d785c98df295
 ```
 
 ## Construction Examples for Common Agent Tasks
@@ -167,20 +167,20 @@ turl amp://T-019c0797-c402-7389-bd80-d785c98df295
 Compact (Claude child thread from known main + agent id):
 
 ```bash
-turl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
+xurl claude://2823d1df-720a-4c31-ac55-ae8ba726721f/acompact-69d537
 ```
 
 Handoff (Codex deep-link shared by another agent):
 
 ```bash
-turl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
+xurl codex://threads/019c871c-b1f9-7f60-9c4f-87ed09f13592
 ```
 
 Delegate follow-up (discover child first, then drill down):
 
 ```bash
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
-turl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592 --list
+xurl codex://019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1-832f02598495
 ```
 
 ## Agent Behavior

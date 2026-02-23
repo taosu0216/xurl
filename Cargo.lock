@@ -681,32 +681,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "turl-cli"
-version = "0.0.7"
-dependencies = [
- "assert_cmd",
- "clap",
- "predicates",
- "tempfile",
- "turl-core",
-]
-
-[[package]]
-name = "turl-core"
-version = "0.0.7"
-dependencies = [
- "dirs",
- "once_cell",
- "regex",
- "rusqlite",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror",
- "walkdir",
-]
-
-[[package]]
 name = "unicode-ident"
 version = "1.0.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -917,6 +891,32 @@ dependencies = [
  "serde_json",
  "unicode-xid",
  "wasmparser",
+]
+
+[[package]]
+name = "xurl-cli"
+version = "0.0.7"
+dependencies = [
+ "assert_cmd",
+ "clap",
+ "predicates",
+ "tempfile",
+ "xurl-core",
+]
+
+[[package]]
+name = "xurl-core"
+version = "0.0.7"
+dependencies = [
+ "dirs",
+ "once_cell",
+ "regex",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror",
+ "walkdir",
 ]
 
 [[package]]
