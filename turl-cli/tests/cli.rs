@@ -266,6 +266,8 @@ fn codex_list_raw_outputs_aggregate_json() {
 #[test]
 fn codex_subagent_outputs_markdown_view() {
     let temp = setup_codex_subagent_tree();
+    let main_uri = format!("codex://{SESSION_ID}");
+    let subagent_uri = format!("{main_uri}/{SUBAGENT_ID}");
 
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
     cmd.env("CODEX_HOME", temp.path())
@@ -274,6 +276,12 @@ fn codex_subagent_outputs_markdown_view() {
         .assert()
         .success()
         .stdout(predicate::str::contains("# Subagent Thread"))
+        .stdout(predicate::str::contains(format!(
+            "- Main Thread: `{main_uri}`"
+        )))
+        .stdout(predicate::str::contains(format!(
+            "- Subagent Thread: `{subagent_uri}`"
+        )))
         .stdout(predicate::str::contains("## Lifecycle (Parent Thread)"))
         .stdout(predicate::str::contains("## Thread Excerpt (Child Thread)"));
 }
@@ -310,6 +318,8 @@ fn codex_subagent_outputs_no_warning_text_for_markdown() {
 fn codex_real_fixture_subagent_list_outputs_markdown() {
     let fixture_root = codex_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
+    let main_uri = format!("codex://{REAL_FIXTURE_MAIN_ID}");
+    let subagent_uri = format!("{main_uri}/{REAL_FIXTURE_AGENT_ID}");
 
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
     cmd.env("CODEX_HOME", fixture_root)
@@ -319,7 +329,10 @@ fn codex_real_fixture_subagent_list_outputs_markdown() {
         .assert()
         .success()
         .stdout(predicate::str::contains("# Subagent Status"))
-        .stdout(predicate::str::contains(REAL_FIXTURE_AGENT_ID));
+        .stdout(predicate::str::contains(format!(
+            "- Main Thread: `{main_uri}`"
+        )))
+        .stdout(predicate::str::contains(subagent_uri));
 }
 
 #[test]
@@ -447,6 +460,8 @@ fn claude_list_raw_outputs_aggregate_json() {
 #[test]
 fn claude_subagent_outputs_markdown_view() {
     let temp = setup_claude_subagent_tree();
+    let main_uri = format!("claude://{CLAUDE_SESSION_ID}");
+    let subagent_uri = format!("{main_uri}/{CLAUDE_AGENT_ID}");
 
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
     cmd.env("CLAUDE_CONFIG_DIR", temp.path())
@@ -455,6 +470,12 @@ fn claude_subagent_outputs_markdown_view() {
         .assert()
         .success()
         .stdout(predicate::str::contains("# Subagent Thread"))
+        .stdout(predicate::str::contains(format!(
+            "- Main Thread: `{main_uri}`"
+        )))
+        .stdout(predicate::str::contains(format!(
+            "- Subagent Thread: `{subagent_uri}`"
+        )))
         .stdout(predicate::str::contains("## Agent Status Summary"));
 }
 
@@ -462,6 +483,8 @@ fn claude_subagent_outputs_markdown_view() {
 fn claude_real_fixture_subagent_list_outputs_markdown() {
     let fixture_root = claude_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
+    let main_uri = format!("claude://{CLAUDE_REAL_MAIN_ID}");
+    let subagent_uri = format!("{main_uri}/{CLAUDE_REAL_AGENT_ID}");
 
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("turl"));
     cmd.env("CLAUDE_CONFIG_DIR", fixture_root)
@@ -471,7 +494,10 @@ fn claude_real_fixture_subagent_list_outputs_markdown() {
         .assert()
         .success()
         .stdout(predicate::str::contains("# Subagent Status"))
-        .stdout(predicate::str::contains(CLAUDE_REAL_AGENT_ID));
+        .stdout(predicate::str::contains(format!(
+            "- Main Thread: `{main_uri}`"
+        )))
+        .stdout(predicate::str::contains(subagent_uri));
 }
 
 #[test]

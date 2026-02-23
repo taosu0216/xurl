@@ -105,6 +105,7 @@ turl amp://T-019c0797-c402-7389-bd80-d785c98df295
 
 - If the user does not request `--raw`, use default markdown output first.
 - If the user asks for subagent aggregation, use `--list` with the parent thread URI.
+- In subagent markdown output, keep parent and subagent references as full URIs (`<provider>://<main>` and `<provider>://<main>/<agent>`).
 - If the user requests exact records, rerun with `--raw`.
 - Return the command output directly.
 - Do not infer or reinterpret thread meaning unless the user explicitly asks for analysis.

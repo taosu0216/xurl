@@ -995,10 +995,11 @@ fn make_query(uri: &ThreadUri, agent_id: Option<String>, list: bool) -> Subagent
 }
 
 fn render_subagent_list_markdown(view: &SubagentListView) -> String {
+    let main_thread_uri = format!("{}://{}", view.query.provider, view.query.main_thread_id);
     let mut output = String::new();
     output.push_str("# Subagent Status\n\n");
     output.push_str(&format!("- Provider: `{}`\n", view.query.provider));
-    output.push_str(&format!("- Main Thread: `{}`\n", view.query.main_thread_id));
+    output.push_str(&format!("- Main Thread: `{}`\n", main_thread_uri));
     output.push_str("- Mode: `list`\n\n");
 
     if view.agents.is_empty() {
@@ -1007,7 +1008,8 @@ fn render_subagent_list_markdown(view: &SubagentListView) -> String {
     }
 
     for (index, agent) in view.agents.iter().enumerate() {
-        output.push_str(&format!("## {}. `{}`\n\n", index + 1, agent.agent_id));
+        let agent_uri = format!("{}/{}", main_thread_uri, agent.agent_id);
+        output.push_str(&format!("## {}. `{}`\n\n", index + 1, agent_uri));
         output.push_str(&format!(
             "- Status: `{}` (`{}`)\n",
             agent.status, agent.status_source
@@ -1036,12 +1038,16 @@ fn render_subagent_list_markdown(view: &SubagentListView) -> String {
 }
 
 fn render_subagent_detail_markdown(view: &SubagentDetailView) -> String {
+    let main_thread_uri = format!("{}://{}", view.query.provider, view.query.main_thread_id);
     let mut output = String::new();
     output.push_str("# Subagent Thread\n\n");
     output.push_str(&format!("- Provider: `{}`\n", view.query.provider));
-    output.push_str(&format!("- Main Thread: `{}`\n", view.query.main_thread_id));
+    output.push_str(&format!("- Main Thread: `{}`\n", main_thread_uri));
     if let Some(agent_id) = &view.query.agent_id {
-        output.push_str(&format!("- Agent: `{}`\n", agent_id));
+        output.push_str(&format!(
+            "- Subagent Thread: `{}/{}`\n",
+            main_thread_uri, agent_id
+        ));
     }
     output.push_str(&format!(
         "- Status: `{}` (`{}`)\n\n",
