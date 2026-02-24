@@ -16,7 +16,7 @@ The existing URI behavior is inconsistent with subagent use cases because it onl
 - Use one URI shape across providers for subagent drill-down.
 - Support both aggregate status and single-agent drill-down.
 - Use one explicit CLI mode switch for aggregate listing.
-- Make raw output stable for automation consumers.
+- Make markdown metadata stable for automation consumers.
 
 ## Non-Goals
 
@@ -54,7 +54,7 @@ The existing URI behavior is inconsistent with subagent use cases because it onl
 
 - `--list` requires a parent-thread URI (`<provider>://<main_thread_id>`).
 - `--list` is invalid with drill-down URI (`<provider>://<main_thread_id>/<agent_id>`).
-- `--list` can be combined with `--raw` for machine-readable aggregate output.
+- `--list` always renders markdown output.
 
 ## Provider Mapping
 
@@ -80,7 +80,7 @@ The existing URI behavior is inconsistent with subagent use cases because it onl
 2. Discover child/subagent records for that provider.
 3. Validate parent-child linkage.
 4. Build per-agent status summary.
-5. Render aggregate markdown or emit structured raw JSON.
+5. Render aggregate markdown.
 
 ### Drill-Down: `<provider>://<main>/<agent>`
 
@@ -88,7 +88,7 @@ The existing URI behavior is inconsistent with subagent use cases because it onl
 2. Locate target agent/thread using provider mapping rules.
 3. Validate linkage between parent and agent.
 4. Build lifecycle summary from parent and excerpt from agent transcript.
-5. Render combined view or emit structured raw JSON.
+5. Render combined markdown view.
 
 ## Status Normalization
 
@@ -118,18 +118,12 @@ Use a consistent section layout:
 2. `Lifecycle (Parent Thread)`
 3. `Thread Excerpt (Child Thread)`
 
-### Raw
+### Frontmatter
 
-Return stable machine-readable fields:
+Single-thread timeline output includes YAML frontmatter fields for machine use:
 
-- `query`
-- `relation`
-- `lifecycle`
-- `status`
-- `status_source`
-- `child_thread`
-- `excerpt`
-- `warnings`
+- `uri`
+- `thread_source`
 
 ## Compatibility Rules
 
@@ -158,5 +152,5 @@ Return stable machine-readable fields:
   - Codex parent-child validation and lifecycle extraction
   - Claude file discovery in both known layouts
 - CLI integration tests:
-  - markdown and `--raw` for aggregate and drill-down URIs
+  - markdown for aggregate and drill-down URIs
   - stderr warnings and exit-code behavior unchanged

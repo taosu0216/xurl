@@ -102,16 +102,20 @@ Legacy compatibility:
 
 ## Commands
 
-Default output (timeline markdown with user/assistant messages and compact markers):
+Default output (timeline markdown with frontmatter and timeline entries):
 
 ```bash
 xurl agents://codex/019c871c-b1f9-7f60-9c4f-87ed09f13592
 ```
 
-Raw JSONL output:
+Frontmatter includes machine-readable source metadata:
 
 ```bash
-xurl agents://codex/019c871c-b1f9-7f60-9c4f-87ed09f13592 --raw
+# output starts with:
+# ---
+# uri: 'agents://codex/...'
+# thread_source: '/abs/path/to/thread.jsonl'
+# ---
 ```
 
 Discover child targets first:
@@ -176,10 +180,10 @@ xurl agents://codex/019c871c-b1f9-7f60-9c4f-87ed09f13592/019c87fb-38b9-7843-92b1
 
 - Prefer canonical `agents://` URIs when constructing links or commands.
 - Legacy provider schemes are accepted, so keep workflows compatible with existing links.
-- If the user does not request `--raw`, use default markdown output first.
+- Use default markdown output and read frontmatter (`thread_source`) when raw file access is needed.
 - If the user asks for subagent aggregation, use `--list` with the parent thread URI.
 - If the user asks for Pi session navigation targets, use `--list` with `agents://pi/<session_id>`.
-- If the user requests exact records, rerun with `--raw`.
+- If the user requests exact records, read the `thread_source` path from frontmatter.
 - If the output is long, redirect to a temp file and grep/summarize based on the user request.
 - Do not infer or reinterpret thread meaning unless the user explicitly asks for analysis.
 

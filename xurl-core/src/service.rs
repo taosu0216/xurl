@@ -61,7 +61,7 @@ pub fn resolve_thread(uri: &ThreadUri, roots: &ProviderRoots) -> Result<Resolved
     }
 }
 
-pub fn read_thread_raw(path: &Path) -> Result<String> {
+fn read_thread_raw(path: &Path) -> Result<String> {
     let bytes = fs::read(path).map_err(|source| XurlError::Io {
         path: path.to_path_buf(),
         source,
@@ -108,10 +108,6 @@ pub fn resolve_subagent_view(
             uri.provider.to_string(),
         )),
     }
-}
-
-pub fn subagent_view_to_raw_json(view: &SubagentView) -> Result<String> {
-    serde_json::to_string_pretty(view).map_err(|err| XurlError::Serialization(err.to_string()))
 }
 
 pub fn render_subagent_view_markdown(view: &SubagentView) -> String {
@@ -226,10 +222,6 @@ pub fn resolve_pi_entry_list_view(
         entries,
         warnings,
     })
-}
-
-pub fn pi_entry_list_view_to_raw_json(view: &PiEntryListView) -> Result<String> {
-    serde_json::to_string_pretty(view).map_err(|err| XurlError::Serialization(err.to_string()))
 }
 
 pub fn render_pi_entry_list_markdown(view: &PiEntryListView) -> String {

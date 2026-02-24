@@ -32,9 +32,17 @@ pub fn render_markdown(uri: &ThreadUri, source_path: &Path, raw_jsonl: &str) -> 
     )?;
 
     let mut output = String::new();
+    let thread_uri = uri.as_agents_string();
+    let source = source_path.to_string_lossy();
+    output.push_str("---\n");
+    output.push_str(&format!("uri: '{}'\n", yaml_single_quoted(&thread_uri)));
+    output.push_str(&format!(
+        "thread_source: '{}'\n",
+        yaml_single_quoted(source.as_ref())
+    ));
+    output.push_str("---\n\n");
     output.push_str("# Thread\n\n");
-    output.push_str(&format!("- URI: `{}`\n", uri.as_agents_string()));
-    output.push_str(&format!("- Source: `{}`\n\n", source_path.display()));
+    output.push_str("## Timeline\n\n");
 
     if entries.is_empty() {
         output.push_str("_No user/assistant messages or compact events found._\n");
@@ -62,6 +70,10 @@ pub fn render_markdown(uri: &ThreadUri, source_path: &Path, raw_jsonl: &str) -> 
     }
 
     Ok(output)
+}
+
+fn yaml_single_quoted(value: &str) -> String {
+    value.replace('\'', "''")
 }
 
 pub fn extract_messages(
@@ -603,6 +615,19 @@ mod tests {
     use crate::model::ProviderKind;
     use crate::render::{extract_messages, render_markdown};
     use crate::uri::ThreadUri;
+
+    #[test]
+    fn render_outputs_frontmatter() {
+        let raw = r#"{"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"hello"}]}}"#;
+        let uri =
+            ThreadUri::parse("codex://019c871c-b1f9-7f60-9c4f-87ed09f13592").expect("parse uri");
+        let output = render_markdown(&uri, Path::new("/tmp/mock"), raw).expect("render");
+
+        assert!(output.starts_with("---\n"));
+        assert!(output.contains("uri: 'agents://codex/019c871c-b1f9-7f60-9c4f-87ed09f13592'"));
+        assert!(output.contains("thread_source: '/tmp/mock'"));
+        assert!(output.contains("## Timeline"));
+    }
 
     #[test]
     fn codex_filters_function_calls() {

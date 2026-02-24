@@ -209,10 +209,6 @@ fn agents_codex_subagent_uri() -> String {
     format!("agents://codex/{SESSION_ID}/{SUBAGENT_ID}")
 }
 
-fn claude_uri() -> String {
-    format!("claude://{CLAUDE_SESSION_ID}")
-}
-
 fn claude_subagent_uri() -> String {
     format!("claude://{CLAUDE_SESSION_ID}/{CLAUDE_AGENT_ID}")
 }
@@ -267,7 +263,11 @@ fn default_outputs_markdown() {
         .arg(codex_uri())
         .assert()
         .success()
+        .stdout(predicate::str::contains("---\n"))
+        .stdout(predicate::str::contains("uri: 'agents://codex/"))
+        .stdout(predicate::str::contains("thread_source: '"))
         .stdout(predicate::str::contains("# Thread"))
+        .stdout(predicate::str::contains("## Timeline"))
         .stdout(predicate::str::contains("## 1. User"))
         .stdout(predicate::str::contains("hello"));
 }
@@ -283,14 +283,14 @@ fn agents_uri_outputs_markdown() {
         .assert()
         .success()
         .stdout(predicate::str::contains(format!(
-            "- URI: `agents://codex/{SESSION_ID}`"
+            "uri: 'agents://codex/{SESSION_ID}'"
         )))
         .stdout(predicate::str::contains("## 1. User"))
         .stdout(predicate::str::contains("hello"));
 }
 
 #[test]
-fn raw_outputs_json() {
+fn raw_flag_is_rejected() {
     let temp = setup_codex_tree();
 
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
@@ -299,8 +299,8 @@ fn raw_outputs_json() {
         .arg(codex_uri())
         .arg("--raw")
         .assert()
-        .success()
-        .stdout(predicate::str::contains("\"response_item\""));
+        .failure()
+        .stderr(predicate::str::contains("unexpected argument '--raw'"));
 }
 
 #[test]
@@ -331,23 +331,6 @@ fn agents_codex_deeplink_outputs_markdown() {
         .stdout(predicate::str::contains("# Thread"))
         .stdout(predicate::str::contains("## 1. User"))
         .stdout(predicate::str::contains("hello"));
-}
-
-#[test]
-fn codex_list_raw_outputs_aggregate_json() {
-    let temp = setup_codex_subagent_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("CODEX_HOME", temp.path())
-        .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
-        .arg(codex_uri())
-        .arg("--list")
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"kind\": \"list\""))
-        .stdout(predicate::str::contains(SUBAGENT_ID))
-        .stdout(predicate::str::contains("\"warnings\"").not());
 }
 
 #[test]
@@ -505,21 +488,6 @@ fn amp_outputs_markdown() {
 }
 
 #[test]
-fn amp_raw_outputs_json() {
-    let temp = setup_amp_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("XDG_DATA_HOME", temp.path())
-        .env("CODEX_HOME", temp.path().join("missing-codex"))
-        .env("CLAUDE_CONFIG_DIR", temp.path().join("missing-claude"))
-        .arg(amp_uri())
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"messages\""));
-}
-
-#[test]
 fn gemini_outputs_markdown() {
     let temp = setup_gemini_tree();
 
@@ -532,19 +500,6 @@ fn gemini_outputs_markdown() {
         .stdout(predicate::str::contains("## 1. User"))
         .stdout(predicate::str::contains("hello"))
         .stdout(predicate::str::contains("world"));
-}
-
-#[test]
-fn gemini_raw_outputs_json() {
-    let temp = setup_gemini_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("GEMINI_CLI_HOME", temp.path())
-        .arg(gemini_uri())
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"sessionId\""));
 }
 
 #[test]
@@ -577,20 +532,6 @@ fn pi_entry_outputs_markdown_from_requested_leaf() {
 }
 
 #[test]
-fn pi_raw_outputs_json() {
-    let temp = setup_pi_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
-        .arg(pi_uri())
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"type\":\"session\""))
-        .stdout(predicate::str::contains(PI_SESSION_ID));
-}
-
-#[test]
 fn pi_list_outputs_markdown() {
     let temp = setup_pi_tree();
 
@@ -605,25 +546,6 @@ fn pi_list_outputs_markdown() {
             "agents://pi/{PI_SESSION_ID}/a1b2c3d4"
         )))
         .stdout(predicate::str::contains("- Leaf: `yes`"));
-}
-
-#[test]
-fn pi_list_raw_outputs_json() {
-    let temp = setup_pi_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("PI_CODING_AGENT_DIR", temp.path().join("agent"))
-        .arg(pi_uri())
-        .arg("--list")
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"provider\": \"pi\""))
-        .stdout(predicate::str::contains(
-            "\"session_id\": \"12cb4c19-2774-4de4-a0d0-9fa32fbae29f\"",
-        ))
-        .stdout(predicate::str::contains("\"entry_id\": \"f1b2c3d4\""))
-        .stdout(predicate::str::contains("\"is_leaf\": true"));
 }
 
 #[test]
@@ -655,23 +577,6 @@ fn pi_real_fixture_outputs_markdown() {
         .stdout(predicate::str::contains("# Thread"))
         .stdout(predicate::str::contains("## 1. User"))
         .stdout(predicate::str::contains("## 2. Assistant"));
-}
-
-#[test]
-fn claude_list_raw_outputs_aggregate_json() {
-    let temp = setup_claude_subagent_tree();
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("CLAUDE_CONFIG_DIR", temp.path())
-        .env("CODEX_HOME", temp.path().join("missing-codex"))
-        .arg(claude_uri())
-        .arg("--list")
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"kind\": \"list\""))
-        .stdout(predicate::str::contains(CLAUDE_AGENT_ID))
-        .stdout(predicate::str::contains("\"warnings\"").not());
 }
 
 #[test]
@@ -747,22 +652,6 @@ fn gemini_real_fixture_outputs_markdown() {
 }
 
 #[test]
-fn gemini_real_fixture_raw_outputs_json() {
-    let fixture_root = gemini_real_fixture_root();
-    assert!(fixture_root.exists(), "fixture root must exist");
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("GEMINI_CLI_HOME", fixture_root)
-        .arg(gemini_real_uri())
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains(
-            "\"sessionId\": \"da2ab190-85f8-4d5c-bcce-8292921a33bf\"",
-        ));
-}
-
-#[test]
 fn opencode_real_fixture_outputs_markdown() {
     let fixture_root = opencode_real_fixture_root();
     assert!(fixture_root.exists(), "fixture root must exist");
@@ -774,19 +663,4 @@ fn opencode_real_fixture_outputs_markdown() {
         .success()
         .stdout(predicate::str::contains("# Thread"))
         .stdout(predicate::str::contains("## 1. User"));
-}
-
-#[test]
-fn opencode_real_fixture_raw_outputs_json() {
-    let fixture_root = opencode_real_fixture_root();
-    assert!(fixture_root.exists(), "fixture root must exist");
-
-    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("xurl"));
-    cmd.env("XDG_DATA_HOME", fixture_root)
-        .arg(opencode_real_uri())
-        .arg("--raw")
-        .assert()
-        .success()
-        .stdout(predicate::str::contains("\"type\":\"session\""))
-        .stdout(predicate::str::contains(OPENCODE_REAL_SESSION_ID));
 }

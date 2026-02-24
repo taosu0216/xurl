@@ -14,8 +14,7 @@
   - <img src=".github/assets/pi-logo-dark.svg" alt="Pi logo" width="16" height="16" /> Pi
   - <img src="https://opencode.ai/favicon.ico" alt="OpenCode logo" width="16" height="16" /> OpenCode
 - Unified URI scheme: `agents://<provider>/<thread_path>` is the primary format.
-- Default output is timeline markdown with user/assistant messages and compact markers.
-- `--raw` outputs raw thread records.
+- Default output is timeline markdown with YAML frontmatter (`uri`, `thread_source`) plus user/assistant messages and compact markers.
 - `--list` outputs subagent status aggregation for providers that support subagent transcripts.
 - Subagent markdown views print full parent/subagent URIs in `agents://...` format.
 - Non-fatal diagnostics are kept internal; only fatal errors are printed to `stderr`.
