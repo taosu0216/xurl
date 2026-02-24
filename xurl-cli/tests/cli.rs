@@ -332,7 +332,9 @@ fn codex_subagent_head_outputs_header_only() {
         .assert()
         .success()
         .stdout(predicate::str::contains("mode: 'subagent_detail'"))
-        .stdout(predicate::str::contains(format!("agent_id: '{SUBAGENT_ID}'")))
+        .stdout(predicate::str::contains(format!(
+            "agent_id: '{SUBAGENT_ID}'"
+        )))
         .stdout(predicate::str::contains("status:"))
         .stdout(predicate::str::contains("# Subagent Thread").not());
 }
