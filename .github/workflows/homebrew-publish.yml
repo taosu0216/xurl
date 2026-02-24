@@ -105,7 +105,6 @@ jobs:
               class Xurl < Formula
                 desc "Client for AI agent URLs"
                 homepage "https://github.com/Xuanwo/xurl"
-                version "{version}"
                 license "Apache-2.0"
 
                 on_macos do
@@ -138,7 +137,7 @@ jobs:
               end
               """
           )
-          formula_path.write_text(content + "\n", encoding="utf-8")
+          formula_path.write_text(content.rstrip() + "\n", encoding="utf-8")
           PY
         env:
           VERSION: ${{ steps.read-manifest.outputs.version }}

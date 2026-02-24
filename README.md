@@ -59,6 +59,42 @@ npx skills add Xuanwo/xurl
 Please summarize this thread: agents://codex/xxx_thread
 ```
 
+## Repository Usage
+
+Run `xurl` directly from source:
+
+```bash
+cargo run -p xurl-cli -- --help
+```
+
+Run the test suite:
+
+```bash
+cargo test --workspace
+```
+
+Run CLI integration tests only:
+
+```bash
+cargo test -p xurl-cli --test cli
+```
+
+Release process summary:
+
+1. Bump crate versions in `xurl-core/Cargo.toml` and `xurl-cli/Cargo.toml`.
+2. Push to `main`.
+3. Create and push a tag like `v0.0.14`.
+4. GitHub Actions will publish release assets, npm, PyPI, and Homebrew updates.
+
+## Projects in This Repository
+
+- [`xurl-core`](./xurl-core): core URI parsing, provider resolution, thread reading, and markdown rendering.
+- [`xurl-cli`](./xurl-cli): CLI entrypoint and argument handling for `xurl`.
+- [`npm`](./npm): Node.js wrapper package source for [`@xuanwo/xurl`](https://www.npmjs.com/package/@xuanwo/xurl).
+- [`pyproject.toml`](./pyproject.toml): Python package metadata for [`xuanwo-xurl`](https://pypi.org/project/xuanwo-xurl/).
+- [`homebrew-tap`](https://github.com/Xuanwo/homebrew-tap): Homebrew formula repository (`xuanwo/tap`).
+- [`skills/xurl`](./skills/xurl/SKILL.md): Codex skill instructions for using `xurl`.
+
 ## URL Format
 
 Primary URI format:
